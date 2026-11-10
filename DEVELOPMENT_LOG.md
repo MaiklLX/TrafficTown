@@ -40,6 +40,14 @@ Branch: `feat/traffic-town-kt-006-city-connections`
 - Each residential, workplace and shop building now displays a demand meter that grows and falls with simulated demand.
 - Live blocked vehicles are marked on the road network with amber/red pressure halos. The city dashboard combines vehicle density and actual waiting time, and reports average vehicle delay.
 - Park details are now deterministic instead of randomly moving on every render frame.
+- Simplified the starter-level toolset to a single primary action: connect two meaningful city objects. Bus management, road widening, signals, turn restrictions, one-way roads and erase tools are temporarily hidden; they will return as unlockable mechanics when levels teach them.
+- Fixed the artificial gridlock bug: a car yields only to a vehicle ahead in the same direction and lane, not to a car behind it, crossing its path or approaching from the opposite direction.
+- Removed legacy signal/turn blocking from the starter level and stopped rendering saved signal markers, so invisible old traffic controls cannot freeze cars.
+- Reduced random traffic generation and capped active cars based on built road length. Removed surprise automatic district spawns from the first level so the player can understand the initial city and objective.
+- Reworked the road palette and grid contrast: softer ground grid, broader muted road surface, cleaner shoulders and lighter centre markings.
+- Simplified map controls to simulation speed only; removed unused zoom and bus-manager buttons from the primary game HUD.
+- Congestion now uses active vehicle density and the number of currently blocked cars; average delay is measured from accumulated trip delay rather than historical blocked-state counts.
+- PWA cache key advanced to `traffictown-shell-v6` to ensure mobile clients request the updated interface.
 - Added versioned local autosave (`traffictown-save-v1`): the simulation stores roads, vehicles, buildings and demand, budget, bus routes/queues, traffic controls, trip count and population every three seconds and on page exit. On reload, a valid save is restored and the player receives a confirmation in the dispatcher tip.
 - PWA shell cache bumped to `traffictown-shell-v5` so the updated build replaces the older cached UI.
 - Mobile HUD no longer crowds the action buttons; the initial hint describes the actual tap-to-connect interaction.
@@ -83,14 +91,28 @@ Branch: `feat/traffic-town-kt-006-city-connections`
 
 ## Next steps
 
-1. Test the actual touch interaction, map readability, vehicle movement and bus-line setup in a real browser on phone-sized and desktop viewports.
-2. Tune trip demand, vehicle spacing and congestion so road design has visible consequences.
-3. Add level progression, new map scenarios and rewards after the first level loop is fun and reliable.
-4. Rework the main menu and level selection around the puzzle-first game.
-5. Only after browser checks and successful CI, open a PR and publish the combined milestone to Pages.
+1. Confirm the latest GitHub Actions run passes, including the new same-lane / behind / crossing / oncoming vehicle tests.
+2. Run a longer deterministic simulation with several connected routes to confirm that vehicles continue moving without artificial standstills and that congestion rises only under genuine following pressure.
+3. Inspect the map and tap flow in a real browser at phone and desktop sizes; no browser automation is currently available in this workflow, so do not claim device verification.
+4. Add an undo/redo or route removal flow only after the basic connection experience is stable.
+5. Build a proper level start / completion / next-level flow, then unlock transit and intersection controls gradually.
+6. Only after browser checks and successful CI, open a PR and publish the combined milestone to Pages.
 
 ## Continue in a new chat
 
 Paste this exact phrase:
 
-**«Продолжай TrafficTown с КТ-006 в ветке feat/traffic-town-kt-006-city-connections. Прочитай DEVELOPMENT_LOG.md и README.md, проверь актуальный HEAD и GitHub Actions. Доведи мобильную механику соединения зданий и дорожную сеть в стиле Mini Motorways: строительство от объекта к объекту, ограниченный бюджет дорог, спрос на поездки, пробки и цели уровня. Проверь реальное поведение в браузере, не заявляй о тестах устройства без проверки. Сохраняй строго top-down 2D, держи main нетронутой до завершения этапа. После успешных проверок обнови журнал и опубликуй проверенную версию в GitHub Pages. Ежедневные проверки не создавать.»**
+**«Продолжай TrafficTown с КТ-006 в ветке feat/traffic-town-kt-006-city-connections. Прочитай DEVELOPMENT_LOG.md и README.md, проверь актуальный HEAD и GitHub Actions. Упрости первый уровень до соединения объектов, ограниченного бюджета и понятной цели; исправь пробки (машины уступают только впереди идущим в том же направлении), убери преждевременные светофоры/автобусы/ограничения из основного интерфейса, улучши дорожную графику и мобильный HUD. Затем проверь логику и реальный браузер, не заявляй о тестах устройства без проверки. Проверь реальное поведение в браузере, не заявляй о тестах устройства без проверки. Сохраняй строго top-down 2D, держи main нетронутой до завершения этапа. После успешных проверок обнови журнал и опубликуй проверенную версию в GitHub Pages. Ежедневные проверки не создавать.»**
+
+
+## KT-006 refinement — traffic rules and focus
+
+- User feedback: the prototype exposed too many tools at once, jams were hard to understand, signals could be placed on arbitrary map cells, road art was too grid-like, and panels were intrusive.
+- Design decision: the first level teaches one verb only — connect buildings. Advanced transit and traffic-control features are retained in code but hidden until a later unlock. This is deliberate scope reduction, not removal of the future roadmap.
+- Vehicle following now checks direction, forward distance and lateral alignment. A following vehicle behind, a perpendicular crossing vehicle, or an oncoming vehicle no longer blocks movement. A vehicle ahead in the same lane still creates a safe following gap.
+- Random district growth was removed from the starter level; the map and objective remain stable while the player learns the network.
+- Vehicle generation is capped against available road length and runs at a lower base rate, preventing speed settings from flooding the map.
+- Traffic pressure is computed from active vehicle density and currently blocked cars. The average delay indicator uses accumulated delay on active trips.
+- Road surfaces now have a quieter grid, wider muted asphalt and clearer soft edges / centre markings. Mobile HUD retains the objective and road budget without experimental control clutter.
+- PWA cache is `traffictown-shell-v6`.
+- Latest test fix aligns the CI delay assertion with the actual trip-delay field. Latest Actions run is being checked; do not publish until it is green.
