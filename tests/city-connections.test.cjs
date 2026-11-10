@@ -5,7 +5,7 @@ const assert = require('node:assert/strict');
 const html = fs.readFileSync('index.html', 'utf8');
 const match = html.match(/<script>([\s\S]*?)<\/script>/);
 assert.ok(match, 'inline game script exists');
-const hook = 'globalThis.__trafficTownTest = { buildings, roads, connections, cars, roadBudget: () => roadBudget, buildingPort, connectAnchors, pathfind, missionProgress, spawnCar, step, updateUI, trips: () => trips };';
+const hook = 'globalThis.__trafficTownTest = { buildings, roads, connections, cars, roadBudget: () => roadBudget, buildingPort, connectAnchors, pathfind, missionProgress, spawnCar, step, updateUI, saveGame, loadGame, trips: () => trips };';
 const close = match[1].lastIndexOf('})();');
 assert.notEqual(close, -1, 'game IIFE close exists');
 const gameScript = match[1].slice(0, close) + hook + match[1].slice(close);
@@ -33,8 +33,10 @@ const document = {
 };
 const deterministicMath = Object.create(Math);
 deterministicMath.random = () => 0.999;
+const savedItems = new Map();
+const localStorage = { getItem(key) { return savedItems.get(key) ?? null; }, setItem(key, value) { savedItems.set(key, value); } };
 const sandbox = {
-  document, window: { addEventListener() {} }, navigator: {}, Math: deterministicMath,
+  document, window: { addEventListener() {} }, navigator: {}, localStorage, Math: deterministicMath,
   performance: { now: () => 0 }, requestAnimationFrame() {}, devicePixelRatio: 1
 };
 vm.runInNewContext(gameScript, sandbox);
@@ -80,6 +82,13 @@ for (const connection of game.connections) {
     }
   }
 }
+const savedRoadCount = game.roads.size;
+const savedBudget = game.roadBudget();
+assert.equal(game.saveGame(), true, 'city state saves to local storage');
+game.roads.clear();
+assert.equal(game.loadGame(), true, 'saved city state can be restored');
+assert.equal(game.roads.size, savedRoadCount, 'road network is restored after reload');
+assert.equal(game.roadBudget(), savedBudget, 'remaining road budget is restored after reload');
 game.spawnCar();
 assert.equal(game.cars.length, 1, 'a connected pair can generate a trip');
 game.cars[0].index = game.cars[0].path.length - 1;
