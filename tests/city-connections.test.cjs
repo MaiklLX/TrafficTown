@@ -50,6 +50,9 @@ const connect = (from, to) => game.connectAnchors(
   { point: game.buildingPort(to), building: to, label: to.name }
 );
 assert.equal(connect(building('Сосновый квартал'), building('Технопарк')), true);
+assert.equal(game.missionProgress(), 1, 'the first connected residential district counts once');
+assert.equal(connect(building('Сосновый квартал'), building('Мастерские')), true);
+assert.equal(game.missionProgress(), 1, 'one home linked to multiple destinations still counts as one district');
 assert.equal(connect(building('Старый город'), building('Мастерские')), true);
 assert.equal(connect(building('Речной район'), building('Торговая улица')), true);
 assert.equal(game.missionProgress(), 3, 'three useful home-to-destination links complete the mission');
