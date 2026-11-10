@@ -1,46 +1,59 @@
 # TrafficTown — development journal
 
-## Current checkpoint: KT-004 (in progress / playable foundation)
+## Current checkpoint: KT-005 (development in progress)
 
 - Repository: `MaiklLX/TrafficTown`
-- Active branch: `feat/traffic-town-foundation-001`
-- Draft PR: https://github.com/MaiklLX/TrafficTown/pull/1
-- Public `main`: untouched; no deployment or merge authorized.
-- User preference: mobile-first; strict top-down 2D; no daily checks or recurring reminders.
+- Public branch: `main`
+- Active development branch: `feat/traffic-town-kt-005-transit`
+- Published KT-004 merge commit: `78da07b2724ea98a92c91b00c0ce538696257eb6`
+- Published browser build: https://maikllx.github.io/TrafficTown/
+- GitHub Actions publish run: https://github.com/MaiklLX/TrafficTown/actions/runs/42859247929 — verify and deploy jobs succeeded.
+- PR #1 (KT-001…KT-004): merged.
+- User preference: mobile-first; strict top-down 2D; no daily checks or recurring reminders. User has authorized publishing tested milestones to Pages; keep active work on feature branches until ready.
 
-### Completed checkpoints
-- KT-001 — playable responsive city, roads, cars, PWA shell and basic simulation.
-- KT-002 — directional one-way road routing.
-- KT-003 — individual turn restrictions, rerouting and configurable alternating signal phases.
-- KT-004 — first playable bus-line loop:
-  - tap road cells with the Bus tool to add ordered stops;
-  - launch after at least two stops;
-  - route segments validated with the normal pathfinder;
-  - buses circulate by reversing at the end of the route;
-  - buses dwell at stops, board from generated passenger queues and let passengers off;
-  - route and numbered stop markers are drawn on the map.
+## Completed checkpoints
 
-### Latest known commits
-- KT-003 baseline: `3ec9433f9095effb8611f585bab7007b73452ffe`
-- KT-004 bus route + stops: `97961f9e69127fa17041b922b4632915f718648b`
-- KT-004 visible stop markers + passenger queues: `ab48a2d0e6188a48128962dada6a9f48b629f7c0`
-- README checkpoint update follows the latter commit.
+- KT-001 — responsive playable city, roads, cars, PWA shell and basic simulation.
+- KT-002 — one-way roads and direction-aware pathfinding.
+- KT-003 — individual intersection turn restrictions, route recalculation and configurable alternating signal phases.
+- KT-004 — operational first bus loop:
+  - ordered stops placed on existing road tiles;
+  - stop-to-stop paths validated using the normal route finder;
+  - buses circulate and dwell at stops;
+  - simplified passenger queues, boarding and alighting;
+  - route and numbered stop markers drawn on the map.
+- KT-004 was published to GitHub Pages after PR #1 was merged. GitHub Actions run #16 / ID `42859247929` completed successfully, including both `verify` and `deploy`.
 
-### Verification notes
-- Inline JavaScript syntax passed after the KT-004 gameplay changes.
-- No browser/device playtest was performed in this chat.
-- CI status has not yet been confirmed for the latest commit; do not report CI as passing without checking.
-- Passenger behavior is deliberately simplified: no destination-aware boarding/alighting, schedules/headways, transfers or line editing yet.
+## KT-005 implementation so far
 
-### Next work
-KT-005 should make the bus system legible and robust before adding more transport modes:
-1. Show line name, active bus, passenger load and waiting counts in a compact mobile-friendly transit panel.
-2. Prevent duplicate/overlapping stops and give clear feedback for unreachable stop pairs.
-3. Add a sensible departure interval / multiple buses per line.
-4. Improve passenger origin-destination logic so buses actually substitute for private trips rather than only adding random occupancy.
-5. Test narrow mobile layout and ensure bus selection does not break car selection.
+Branch: `feat/traffic-town-kt-005-transit`
 
-### Continue in a new chat
+- Transit manager button added to the map overlay, accessible on mobile and desktop.
+- Manager shows each line's active bus count, passengers onboard and waiting queue.
+- Headway can be adjusted from 8 to 40 simulation seconds.
+- Additional buses dispatch on schedule when the line origin has sufficient spacing.
+- Passenger queues carry a destination stop index and line ID; buses board only passengers assigned to their line and unload at their destination stop.
+- Private-car congestion/load calculation now excludes buses; header separates private cars and bus vehicles.
+- Transit manager and editor overlay adjusted for narrow mobile screens.
+- The JS syntax check passed after the KT-005 code change.
+
+### Latest KT-005 commits
+- `96ab7a92ead8e1e71c8d911867c5a828ab0711eb` — transit manager, dispatch headways and destination-aware passenger queues.
+- `9e5a27401a5e13acc3ce5793d3f2e405fc970589` — mobile overlay refinements and adaptive bus spacing.
+- README and journal updates are being committed after these changes.
+
+### Remaining KT-005 verification and polish
+1. Verify the current feature-branch GitHub Actions run; do not call it passing until confirmed.
+2. Validate the manager interactions and dispatch/boarding behavior with a browser or a deterministic test harness if available.
+3. Check phone-width toolbar overflow and panel scroll behavior.
+4. Ensure selected bus details are readable and passenger counts remain consistent.
+5. Once complete, update PR summary, mark ready, merge to main and verify Pages deployment success.
+
+## Next checkpoint: KT-006
+After KT-005 is stable, begin transport infrastructure: realistic bridge/tunnel/grade-separated crossings only after designing clear rules for crossings, pathfinding and mobile construction UX. Do not jump to rail/metro before the road network is robust.
+
+## Continue in a new chat
+
 Paste this exact phrase:
 
-**«Продолжай TrafficTown с контрольной точки KT-004. Сначала прочитай DEVELOPMENT_LOG.md и README.md в ветке feat/traffic-town-foundation-001, проверь актуальный HEAD и состояние PR #1. Продолжай с KT-005: улучши мобильную панель автобусных линий, интервалы движения и осмысленную логику пассажиропотока. Сохраняй журнал и добавляй фразу продолжения для следующего чата. main не менять, не публиковать, ежедневные проверки не создавать.»**
+**«Продолжай TrafficTown с контрольной точки KT-005. Сначала прочитай DEVELOPMENT_LOG.md и README.md в ветке feat/traffic-town-kt-005-transit, проверь актуальный HEAD, GitHub Actions и опубликованную версию Pages. Доведи до конца панель автобусных линий, интервалы, несколько автобусов и пассажиров с пунктами назначения; проверь мобильную версию. После проверок обнови журнал, создай следующую КТ и фразу для нового чата. Публиковать проверенные этапы в GitHub Pages можно, но сначала держи работу в feature-ветке. Ежедневные проверки не создавать.»**
