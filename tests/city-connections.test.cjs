@@ -89,6 +89,7 @@ for (let i = 0; i < 12; i++) game.spawnCar();
 assert.ok(game.cars.length > 0, 'connected destinations generate vehicle trips');
 assert.equal(game.cars.some(car => car.origin === 'Новый берег'), false, 'unconnected homes do not generate phantom trips');
 game.cars[0].wait = 4;
+game.cars[0].blocked = true;
 game.updateUI();
 assert.equal(elements.get('avgDelay').textContent, '4.0 сек', 'the live average delay reflects actual vehicle waiting time');
 assert.ok(Number.parseInt(elements.get('loadBar').style.width, 10) > 0, 'traffic pressure updates the congestion meter');
