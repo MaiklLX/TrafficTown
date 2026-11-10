@@ -75,6 +75,8 @@ assert.equal(game.trips(), 1, 'a trip is counted only after the vehicle reaches 
 for (let i = 0; i < 12; i++) game.spawnCar();
 assert.ok(game.cars.length > 0, 'connected destinations generate vehicle trips');
 assert.equal(game.cars.some(car => car.origin === 'Новый берег'), false, 'unconnected homes do not generate phantom trips');
+game.roads.clear();
+assert.equal(game.missionProgress(), 0, 'removing the road network resets live connection progress');
 
 console.log('City connection gameplay tests: OK');
-console.log('Mission: ' + game.missionProgress() + '/3; delivered: ' + game.trips() + '; roads: ' + game.roads.size + '; budget left: ' + game.roadBudget());
+console.log('Mission connectivity reset: OK; delivered: ' + game.trips() + '; budget left: ' + game.roadBudget());
