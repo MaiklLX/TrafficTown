@@ -58,11 +58,17 @@ assert.equal(connect(building('Речной район'), building('Торгов
 assert.equal(game.missionProgress(), 3, 'three useful home-to-destination links complete the mission');
 assert.equal(connect(building('Сосновый квартал'), building('Технопарк')), true, 'an alternate route can be added for a connected pair');
 assert.equal(game.missionProgress(), 3, 'duplicate routes do not inflate unique mission progress');
+const budgetBeforeInvalid = game.roadBudget();
+assert.equal(connect(building('Сосновый квартал'), building('Сосновый квартал')), false, 'a building cannot connect to itself');
+assert.equal(game.roadBudget(), budgetBeforeInvalid, 'an invalid connection does not consume road budget');
 assert.ok(game.roads.size > 0 && game.roads.size < 90, 'connections consume a finite road budget');
 assert.ok(game.roadBudget() > 0, 'budget remains after the starter mission');
 
 for (const connection of game.connections) {
   assert.ok(connection.path.length > 1, 'each connection has a traversable route');
+  if (connection.fromBuilding && connection.toBuilding) {
+    assert.ok(game.pathfind(game.buildingPort(building(connection.fromBuilding)), game.buildingPort(building(connection.toBuilding))), 'each built connection remains valid under live traffic rules');
+  }
   for (const point of connection.path) {
     for (const block of game.buildings.filter(item => item.type !== 'park')) {
       const insideFootprint = point.x >= block.x && point.x < block.x + 2 && point.y >= block.y && point.y < block.y + 2;
