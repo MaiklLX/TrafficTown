@@ -118,8 +118,9 @@ function connectAnchors(a,b){
  if(!a||!b||a.point.x===b.point.x&&a.point.y===b.point.y)return false;
  const route=gridRoute(a.point,b.point);if(!route){document.getElementById('advice').textContent='Не удалось найти свободный коридор. Попробуй другой маршрут.';return false}
  const cost=route.filter(p=>!roadAt(p.x,p.y)).length;if(cost>roadBudget){document.getElementById('advice').textContent='Не хватает дорожных участков. Удали лишние дороги или выбери более короткое соединение.';return false}
- for(const p of route)if(!roadAt(p.x,p.y))roads.set(key(p.x,p.y),{type:'road',width:1,dir:0,axis:'h',id:++roadId});
- roadBudget-=cost;connections.push({from:a.label,to:b.label,fromBuilding:a.building?.name||null,toBuilding:b.building?.name||null,fromType:a.building?.type||null,toType:b.building?.type||null,path:route});
+ const created=[];for(const p of route){const k=key(p.x,p.y);if(!roadAt(p.x,p.y)){roads.set(k,{type:'road',width:1,dir:0,axis:'h',id:++roadId});created.push(k)}}
+ const traversable=pathfind(a.point,b.point);if(!traversable){for(const k of created)roads.delete(k);document.getElementById('advice').textContent='Этот маршрут конфликтует с направлением движения или ограничением поворота. Выбери другой коридор.';return false}
+ roadBudget-=cost;connections.push({from:a.label,to:b.label,fromBuilding:a.building?.name||null,toBuilding:b.building?.name||null,fromType:a.building?.type||null,toType:b.building?.type||null,path:traversable});
  connectStart=null;updateNetwork();updateUI();draw();
  document.getElementById('advice').textContent='Маршрут построен: '+a.label+' ↔ '+b.label+'. Теперь жители смогут совершать поездки по этой связи.';
  return true;
