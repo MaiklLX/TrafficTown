@@ -2,11 +2,11 @@
 
 A mobile-first, top-down city traffic puzzle and simulation for phones, tablets and desktop browsers.
 
-## Current checkpoint — KT-006: meaningful city connections (in progress)
+## Current checkpoint — KT-006: city connection puzzle (published)
 
-Development branch: `feat/traffic-town-kt-006-city-connections`
+Public build: KT-006 at https://maikllx.github.io/TrafficTown/
 
-The public GitHub Pages build is still KT-004. The feature branch includes the KT-005 transit work and begins the new core game loop:
+KT-006 includes the KT-005 transit work and the new core game loop:
 - The starting map no longer has a pre-painted road grid; players create the network.
 - Tap a building, then a destination building or an existing road to create a complete connection.
 - The route planner finds a clear grid path while avoiding building footprints and the park.
@@ -17,12 +17,12 @@ The public GitHub Pages build is still KT-004. The feature branch includes the K
 - Homes and destinations have replenishing trip demand. Car departures are weighted by demand and route length, and the trip counter advances only when a vehicle reaches its destination.
 - The starter objective has two stages: connect three different homes, then deliver 12 trips to complete the level.
 - Cars can spawn only when both the origin and destination buildings have direct access to the connected road network.
-- Road rendering is moving from isolated square tiles to a continuous rounded road surface with soft shoulders and lane markings.
+- Road rendering uses continuous rounded road segments with soft shoulders and lane markings.
 - The original bus line manager, headway settings and destination-aware passenger queues are retained in the branch.
 
 ### Verification so far
 - JavaScript parses successfully with a syntax check.
-- Deterministic tests now cover three distinct connected homes, duplicate/alternate links, route validity under traffic rules, invalid self-links, completed trip counting, road-budget safety, and mission reset after the network is erased. The latest successful run is [GitHub Actions #42865294592](https://github.com/MaiklLX/TrafficTown/actions/runs/42865294592).
+- Deterministic tests now cover three distinct connected homes, duplicate/alternate links, route validity under traffic rules, invalid self-links, completed trip counting, road-budget safety, and mission reset after the network is erased. The final published workflow [#42865546024](https://github.com/MaiklLX/TrafficTown/actions/runs/42865546024) passed syntax, gameplay tests, PWA checks and GitHub Pages deployment.
 - This is a code-level logic check, not a claim of manual browser or physical-device testing.
 
 ## Product direction
@@ -38,11 +38,11 @@ The public GitHub Pages build is still KT-004. The feature branch includes the K
 
 ## Publication
 
-GitHub Pages is deployed from `main` after a successful GitHub Actions verification and deploy. The currently published build remains KT-004. KT-005 and KT-006 are feature-branch work and will be published after interaction, mobile layout and CI checks are complete.
+KT-006 was merged through [PR #2](https://github.com/MaiklLX/TrafficTown/pull/2) as commit `da711f0ead08775d4282afbd61fd8c778372e7f3`. GitHub Actions run #42865546024 completed both verification and deployment successfully. The published site is https://maikllx.github.io/TrafficTown/.
 
 ## Next work
 
-1. Finish and verify the building-to-building connection loop on phone-sized and desktop layouts.
-2. Make demand, traffic flow and congestion respond visibly to network quality.
-3. Add scenario progression, goals, rewards and new map situations.
-4. Rework the main menu, level selection and onboarding around the new puzzle-first game.
+1. Manually test the published touch controls, map readability, vehicle movement and bus-line setup on a phone and desktop; no physical-device/browser test is claimed yet.
+2. Tune demand, vehicle spacing and congestion using the first live playtest.
+3. Add level progression, new map scenarios and rewards.
+4. Rework the main menu, level selection and onboarding around the puzzle-first game.
