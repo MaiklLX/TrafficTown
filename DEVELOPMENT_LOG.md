@@ -37,6 +37,11 @@ Branch: `feat/traffic-town-kt-006-city-connections`
 - New connections are checked with the live pathfinder after proposed road cells are placed. One-way and turn restrictions are respected; invalid routes roll back their newly added road cells and do not spend budget.
 - Trip demand now accumulates at homes and destinations. Departure selection is weighted by both demand and route length, so busy districts generate more traffic.
 - The trip counter now records completed deliveries, not just departures. The starter level has two stages: connect three different homes, then deliver 12 trips.
+- Each residential, workplace and shop building now displays a demand meter that grows and falls with simulated demand.
+- Live blocked vehicles are marked on the road network with amber/red pressure halos. The city dashboard combines vehicle density and actual waiting time, and reports average vehicle delay.
+- Park details are now deterministic instead of randomly moving on every render frame.
+- Added versioned local autosave (`traffictown-save-v1`): the simulation stores roads, vehicles, buildings and demand, budget, bus routes/queues, traffic controls, trip count and population every three seconds and on page exit. On reload, a valid save is restored and the player receives a confirmation in the dispatcher tip.
+- PWA shell cache bumped to `traffictown-shell-v5` so the updated build replaces the older cached UI.
 - Mobile HUD no longer crowds the action buttons; the initial hint describes the actual tap-to-connect interaction.
 - Added visual selection/access markers to buildings.
 - Reworked road rendering into continuous rounded road segments with shoulders and lane markings.
@@ -49,7 +54,7 @@ Branch: `feat/traffic-town-kt-006-city-connections`
 
 ### KT-006 checks performed
 - JavaScript syntax parse passed after the latest code changes.
-- GitHub Actions run `42865294592` completed successfully: inline JavaScript syntax, deterministic city connection gameplay tests and PWA file checks all passed.
+- GitHub Actions run `42868280577` completed successfully: inline JavaScript syntax, deterministic gameplay tests (including demand growth, traffic delay and local save/restore) and PWA file checks all passed. Deploy was correctly skipped because this is still a feature branch.
 - Deterministic logic harness:
   - initial road count = 0;
   - initial road budget = 90;
@@ -61,6 +66,8 @@ Branch: `feat/traffic-town-kt-006-city-connections`
   - all recorded building-to-building links remain traversable through the live pathfinder.
 - 12 simulated car spawns produced no trips from the unconnected “Новый берег” district.
 - A completed route increments the delivery counter only after the vehicle reaches its destination.
+- Demand grows during simulation and the UI reports the delay of an actively blocked vehicle.
+- Save/restore test confirms that the road network and remaining road budget survive a reload.
 - Adding multiple destinations to one home still counts as one residential district; erasing the road network resets live mission progress to zero.
 - This is a code-level logic test with a stubbed canvas/DOM, not a real browser/device test.
 - Need test actual tap/click behavior, map readability, touch targets, car movement, bus line creation and PWA cache behavior in a browser before publishing.
