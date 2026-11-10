@@ -16,7 +16,7 @@ The public GitHub Pages build is still KT-004. The feature branch includes the K
 - New connections are validated against one-way streets and turn restrictions before the road budget is spent; invalid routes roll back cleanly.
 - Homes and destinations have replenishing trip demand, shown as small meters above each building. Car departures are weighted by demand and route length, and the trip counter advances only when a vehicle reaches its destination.
 - Live blocked vehicles create amber/red road hotspots. Congestion combines active vehicle density and currently blocked vehicles; average delay uses actual trip delay.
-- City state is automatically saved locally every three seconds and on page exit, including roads, remaining budget, demand, cars, bus routes, stops, traffic controls, and mission progress. The PWA cache key is now `traffictown-shell-v8`.
+- City state is automatically saved locally every three seconds and on page exit, including roads, remaining budget, demand, cars, bus routes, stops, traffic controls, and mission progress. The PWA cache key is now `traffictown-shell-v9`.
 - The starter objective has two stages: connect three different homes, then deliver 12 trips to complete the level.
 - Cars can spawn only when both the origin and destination buildings have direct access to the connected road network.
 - Roads use continuous rounded segments, muted asphalt, soft shoulders and lighter centre markings over a quieter grass grid.
