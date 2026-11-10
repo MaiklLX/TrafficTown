@@ -18,7 +18,7 @@ The public GitHub Pages build is still KT-004. The feature branch includes the K
 
 ### Verification so far
 - JavaScript parses successfully with a syntax check.
-- A deterministic logic harness created three valid home-to-destination links, confirmed the mission reached 3/3, built 71 road cells and left 19 pieces from the initial budget of 90.
+- A deterministic logic harness created three valid home-to-destination links on the 28×22 mobile-focused map, confirmed the mission reached 3/3, built 48 road cells and left 42 pieces from the initial budget of 90. The same checks are now included in GitHub Actions through `tests/city-connections.test.cjs`.
 - This is a code-level logic check, not a claim of manual browser or physical-device testing.
 
 ## Product direction
