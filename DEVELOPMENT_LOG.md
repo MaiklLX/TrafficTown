@@ -35,20 +35,26 @@ Branch: `feat/traffic-town-kt-006-city-connections`
 - Added a first mission counter: only home-to-work and home-to-shop links count toward the 3-connection objective.
 - Added visual selection/access markers to buildings.
 - Reworked road rendering into continuous rounded road segments with shoulders and lane markings.
+- Reduced the map grid from 38×28 to 28×22 so buildings and roads occupy more usable screen space on phones.
+- Added a compact in-map mission goal and live road-budget HUD so the objective remains visible when the desktop side panel is hidden on mobile.
+- The route planner now gives existing road cells a lower traversal cost, encouraging shared corridors instead of parallel duplicate roads.
+- Added `tests/city-connections.test.cjs` and wired it into the Pages verification workflow.
 - Car spawning now requires both endpoint buildings to have direct road access; unconnected buildings cannot create phantom traffic.
 - Retained the bus manager and route tools for later use once roads are built.
 
 ### KT-006 checks performed
 - JavaScript syntax parse passed after the latest code changes.
+- The test file itself also passes a syntax parse. The GitHub Actions workflow has been extended to execute the deterministic connection tests; the latest run is still pending/queued at this handoff.
 - Deterministic logic harness:
   - initial road count = 0;
   - initial road budget = 90;
   - created home → Tech Park, home → Workshops and home → Shopping Street links;
   - all three links succeeded;
   - mission progress reached 3/3;
-  - resulting road count = 71;
-  - remaining budget = 19;
-  - first route was found with 22 road cells.
+  - resulting road count = 48;
+  - remaining budget = 42;
+  - first route was found with 17 road cells.
+- 12 simulated car spawns produced no trips from the unconnected “Новый берег” district.
 - This is a code-level logic test with a stubbed canvas/DOM, not a real browser/device test.
 - Need test actual tap/click behavior, map readability, touch targets, car movement, bus line creation and PWA cache behavior in a browser before publishing.
 
