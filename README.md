@@ -15,17 +15,17 @@ The public GitHub Pages build is still KT-004. The feature branch includes the K
 - Mission progress is calculated from the live road network, so erasing a bridge or disconnecting a district removes its progress immediately.
 - New connections are validated against one-way streets and turn restrictions before the road budget is spent; invalid routes roll back cleanly.
 - Homes and destinations have replenishing trip demand, shown as small meters above each building. Car departures are weighted by demand and route length, and the trip counter advances only when a vehicle reaches its destination.
-- Live blocked vehicles create amber/red road hotspots. Congestion now combines traffic density with measured waiting delay; the city panel reports average delay.
-- City state is automatically saved locally every three seconds and on page exit, including roads, remaining budget, demand, cars, bus routes, stops, traffic controls, and mission progress. The PWA cache key is now `traffictown-shell-v5`.
+- Live blocked vehicles create amber/red road hotspots. Congestion combines active vehicle density and currently blocked vehicles; average delay uses actual trip delay.
+- City state is automatically saved locally every three seconds and on page exit, including roads, remaining budget, demand, cars, bus routes, stops, traffic controls, and mission progress. The PWA cache key is now `traffictown-shell-v6`.
 - The starter objective has two stages: connect three different homes, then deliver 12 trips to complete the level.
 - Cars can spawn only when both the origin and destination buildings have direct access to the connected road network.
-- Road rendering is moving from isolated square tiles to a continuous rounded road surface with soft shoulders and lane markings.
-- The original bus line manager, headway settings and destination-aware passenger queues are retained in the branch.
+- Roads use continuous rounded segments, muted asphalt, soft shoulders and lighter centre markings over a quieter grass grid.
+- Advanced traffic tools and bus management are retained in the codebase but hidden from the starter-level interface until the core connection puzzle is mastered.
 
 ### Verification so far
 - JavaScript parses successfully with a syntax check.
 - Deterministic tests now cover three distinct connected homes, duplicate/alternate links, route validity under traffic rules, invalid self-links, completed trip counting, road-budget safety, and mission reset after the network is erased. The latest successful run, including save/restore coverage, is [GitHub Actions #42868280577](https://github.com/MaiklLX/TrafficTown/actions/runs/42868280577).
-- This is a code-level logic check, not a claim of manual browser or physical-device testing.
+- CI now also tests same-lane following, vehicles behind, perpendicular crossings and oncoming traffic. This is a code-level logic check, not a claim of manual browser or physical-device testing.
 
 ## Product direction
 
@@ -48,3 +48,7 @@ GitHub Pages is deployed from `main` after a successful GitHub Actions verificat
 2. Make demand, traffic flow and congestion respond visibly to network quality.
 3. Add scenario progression, goals, rewards and new map situations.
 4. Rework the main menu, level selection and onboarding around the new puzzle-first game.
+
+## Scope refinement after prototype review
+
+The first level now exposes only the connection tool. Signal placement, turn bans, one-way streets, road widening, erasing and bus construction are hidden until later levels. This prevents players from seeing controls before they understand the basic traffic puzzle. Vehicles only yield to traffic ahead in the same direction and lane; crossing and oncoming vehicles no longer create mutual deadlocks. Random new-district spawns are removed from the starter scenario, vehicle generation is capped by network capacity, and the road palette / mobile HUD have been simplified. These changes are still on the feature branch and are not public yet.
