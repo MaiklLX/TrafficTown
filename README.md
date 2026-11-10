@@ -2,25 +2,20 @@
 
 A top-down, living-city traffic simulation for mobile and desktop browsers.
 
-## Current checkpoint — KT-003: intersections and traffic control
+## Current checkpoint — KT-004: operational bus routes
 
 Branch: `feat/traffic-town-foundation-001`
 
-The playable browser prototype currently includes:
-- Responsive 2D canvas city view, designed mobile-first.
-- Starter city with residential, work, retail and park districts.
-- Autonomous car trips on a connected road grid.
-- Road drawing, widening, removal and functional one-way directions.
-- Route finding that respects one-way streets and individual prohibited turns.
-- Intersection editor: toggle specific movements on or off; affected vehicle routes are recalculated.
-- Configurable traffic signals: choose the active green-flow axis and adjust alternating phase duration.
-- Vehicle selection with its route and accumulated delay.
-- Pause/speed controls, traffic indicators and autonomous population growth.
-- Installable PWA shell with offline caching of the app shell.
+The playable prototype now includes the KT-003 road and intersection controls plus an initial operational bus layer:
+- Select the bus tool and tap existing road cells in order to place stops.
+- A line can be launched after at least two stops have been selected.
+- Each stop-to-stop segment is validated through the same route finder used by cars, respecting one-way streets and prohibited turns.
+- Launched buses move along the route, reverse at the end and continue circulating.
+- Buses dwell at stops, board waiting passengers and let passengers off.
+- Passenger queues accumulate at active line stops; route geometry and numbered stops are drawn on the city map.
+- Bus vehicles are selectable like other vehicles; private-car congestion metrics exclude buses.
 
-## Current limitations
-
-This is an early playable foundation, not the full simulation. Lane-level routing, realistic multi-lane intersections, adaptive signal timing, operational buses and passenger demand, rail/metro, bridges/tunnels, save/load and a full mobile usability pass are still future work. The current bus tool is only a placeholder and does not run vehicles.
+This is a first playable transit loop, not a finished transit simulation. Passenger generation and boarding are currently simplified; timetable headways, destination-based passenger journeys, transfers, line editing/deletion and service reliability remain future work.
 
 ## Development and release safety
 
