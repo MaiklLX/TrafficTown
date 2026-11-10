@@ -152,7 +152,7 @@ function draw(){
  // selected route
  if(selected&&selected.path){ctx.strokeStyle='#f0a83f';ctx.lineWidth=4;ctx.lineCap='round';ctx.beginPath();selected.path.forEach((p,i)=>{const x=p.x*CELL+CELL/2,y=p.y*CELL+CELL/2;i?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.stroke()}
  // cars
- for(const c of cars){const x=(c.x)*CELL+CELL/2,y=(c.y)*CELL+CELL/2;ctx.save();ctx.translate(x,y);ctx.rotate(c.angle||0);ctx.fillStyle=c===selected?'#f3aa42':c.type==='bus'?'#e6b957':'#f7f8ed';roundRect(ctx,-9,-5,18,10,4);ctx.fill();ctx.fillStyle=c.type==='bus'?'#5d8d83':'#5c9db7';roundRect(ctx,-5,-4,9,8,2);ctx.fill();ctx.restore();if(c===selected){ctx.strokeStyle='#f1a83f';ctx.lineWidth=2;ctx.beginPath();ctx.arc(x,y,12,0,7);ctx.stroke()}}
+ for(const c of cars){const x=(c.x)*CELL+CELL/2,y=(c.y)*CELL+CELL/2,a=c.angle||0,dx=Math.cos(a),dy=Math.sin(a),laneX=Math.abs(dy)>.5?(dy>0?-4:4):0,laneY=Math.abs(dx)>.5?(dx>0?4:-4):0;ctx.save();ctx.translate(x+laneX,y+laneY);ctx.rotate(a);ctx.fillStyle=c===selected?'#f3aa42':c.type==='bus'?'#e6b957':'#f7f8ed';roundRect(ctx,-9,-5,18,10,4);ctx.fill();ctx.fillStyle=c.type==='bus'?'#5d8d83':'#5c9db7';roundRect(ctx,-5,-4,9,8,2);ctx.fill();ctx.restore();if(c===selected){ctx.strokeStyle='#f1a83f';ctx.lineWidth=2;ctx.beginPath();ctx.arc(x,y,12,0,7);ctx.stroke()}}
  ctx.restore();
 }
 function roundRect(c,x,y,w,h,r){c.beginPath();c.roundRect(x,y,w,h,r)}
