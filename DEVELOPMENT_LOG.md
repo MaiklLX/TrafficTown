@@ -47,7 +47,7 @@ Branch: `feat/traffic-town-kt-006-city-connections`
 - Reworked the road palette and grid contrast: softer ground grid, broader muted road surface, cleaner shoulders and lighter centre markings.
 - Simplified map controls to simulation speed only; removed unused zoom and bus-manager buttons from the primary game HUD.
 - Congestion now uses active vehicle density and the number of currently blocked cars; average delay is measured from accumulated trip delay rather than historical blocked-state counts.
-- PWA cache key advanced to `traffictown-shell-v6` to ensure mobile clients request the updated interface.
+- PWA cache key advanced to `traffictown-shell-v7` to ensure mobile clients request the updated interface.
 - Added versioned local autosave (`traffictown-save-v1`): the simulation stores roads, vehicles, buildings and demand, budget, bus routes/queues, traffic controls, trip count and population every three seconds and on page exit. On reload, a valid save is restored and the player receives a confirmation in the dispatcher tip.
 - PWA shell cache bumped to `traffictown-shell-v5` so the updated build replaces the older cached UI.
 - Mobile HUD no longer crowds the action buttons; the initial hint describes the actual tap-to-connect interaction.
@@ -91,7 +91,7 @@ Branch: `feat/traffic-town-kt-006-city-connections`
 
 ## Next steps
 
-1. Confirm the latest GitHub Actions run passes, including the new same-lane / behind / crossing / oncoming vehicle tests.
+1. Confirm the latest GitHub Actions run passes, including the same-lane / behind / crossing / oncoming vehicle tests and final cleanup.
 2. Run a longer deterministic simulation with several connected routes to confirm that vehicles continue moving without artificial standstills and that congestion rises only under genuine following pressure.
 3. Inspect the map and tap flow in a real browser at phone and desktop sizes; no browser automation is currently available in this workflow, so do not claim device verification.
 4. Add an undo/redo or route removal flow only after the basic connection experience is stable.
@@ -110,7 +110,7 @@ Paste this exact phrase:
 - User feedback: the prototype exposed too many tools at once, jams were hard to understand, signals could be placed on arbitrary map cells, road art was too grid-like, and panels were intrusive.
 - Design decision: the first level teaches one verb only — connect buildings. Advanced transit and traffic-control features are retained in code but hidden until a later unlock. This is deliberate scope reduction, not removal of the future roadmap.
 - Vehicle following now checks direction, forward distance and lateral alignment. A following vehicle behind, a perpendicular crossing vehicle, or an oncoming vehicle no longer blocks movement. A vehicle ahead in the same lane still creates a safe following gap.
-- Random district growth was removed from the starter level; the map and objective remain stable while the player learns the network.
+- Random district and population growth were removed from the starter level; the map and objective remain stable while the player learns the network. Legacy signal markers are also no longer rendered or restored into the starter simulation.
 - Vehicle generation is capped against available road length and runs at a lower base rate, preventing speed settings from flooding the map.
 - Traffic pressure is computed from active vehicle density and currently blocked cars. The average delay indicator uses accumulated delay on active trips.
 - Road surfaces now have a quieter grid, wider muted asphalt and clearer soft edges / centre markings. Mobile HUD retains the objective and road budget without experimental control clutter.
