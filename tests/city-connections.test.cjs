@@ -5,7 +5,7 @@ const assert = require('node:assert/strict');
 const html = fs.readFileSync('index.html', 'utf8');
 const match = html.match(/<script>([\s\S]*?)<\/script>/);
 assert.ok(match, 'inline game script exists');
-const hook = 'globalThis.__trafficTownTest = { buildings, roads, connections, cars, roadBudget: () => roadBudget, buildingPort, connectAnchors, pathfind, missionProgress, spawnCar, step, trips: () => trips };';
+const hook = 'globalThis.__trafficTownTest = { buildings, roads, connections, cars, roadBudget: () => roadBudget, buildingPort, connectAnchors, pathfind, missionProgress, spawnCar, step, updateUI, trips: () => trips };';
 const close = match[1].lastIndexOf('})();');
 assert.notEqual(close, -1, 'game IIFE close exists');
 const gameScript = match[1].slice(0, close) + hook + match[1].slice(close);
@@ -43,6 +43,10 @@ assert.ok(game, 'test hooks exposed');
 assert.equal(game.roads.size, 0, 'new city starts without pre-painted roads');
 assert.equal(game.buildings.length, 8, 'starter city has its planned landmarks');
 assert.equal(game.roadBudget(), 90, 'starter road budget is 90');
+const firstHome = game.buildings.find(item => item.type === 'home');
+const demandAtStart = firstHome.demand;
+game.step(0.5);
+assert.ok(firstHome.demand > demandAtStart, 'residential demand grows over simulation time');
 
 const building = name => game.buildings.find(item => item.name === name);
 const connect = (from, to) => game.connectAnchors(
@@ -84,6 +88,10 @@ assert.equal(game.trips(), 1, 'a trip is counted only after the vehicle reaches 
 for (let i = 0; i < 12; i++) game.spawnCar();
 assert.ok(game.cars.length > 0, 'connected destinations generate vehicle trips');
 assert.equal(game.cars.some(car => car.origin === 'Новый берег'), false, 'unconnected homes do not generate phantom trips');
+game.cars[0].wait = 4;
+game.updateUI();
+assert.equal(elements.get('avgDelay').textContent, '4.0 сек', 'the live average delay reflects actual vehicle waiting time');
+assert.ok(Number.parseInt(elements.get('loadBar').style.width, 10) > 0, 'traffic pressure updates the congestion meter');
 game.roads.clear();
 assert.equal(game.missionProgress(), 0, 'removing the road network resets live connection progress');
 
