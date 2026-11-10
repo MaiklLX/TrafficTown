@@ -6,7 +6,7 @@ A mobile-first, top-down city traffic puzzle and simulation for phones, tablets 
 
 Development branch: `feat/traffic-town-kt-006-city-connections`
 
-The public GitHub Pages build is still KT-004. The feature branch includes the KT-005 transit work and begins the new core game loop:
+The public GitHub Pages build is KT-006. This feature branch contains post-publication refinements to the starter level and traffic behavior:
 - The starting map no longer has a pre-painted road grid; players create the network.
 - Tap a building, then a destination building or an existing road to create a complete connection.
 - The route planner finds a clear grid path while avoiding building footprints and the park.
@@ -40,7 +40,7 @@ The public GitHub Pages build is still KT-004. The feature branch includes the K
 
 ## Publication
 
-GitHub Pages is deployed from `main` after a successful GitHub Actions verification and deploy. The currently published build remains KT-004. KT-005 and KT-006 are feature-branch work and will be published after interaction, mobile layout and CI checks are complete.
+GitHub Pages is deployed from `main` after a successful GitHub Actions verification and deploy. The currently published build is KT-006 (main commit `49994686f28f6a2086735d49e82ceee4f943137b`). The latest traffic/UI refinements remain on `feat/traffic-town-kt-006-city-connections` and are not yet public.
 
 ## Next work
 

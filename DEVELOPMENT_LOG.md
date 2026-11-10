@@ -6,8 +6,9 @@
 - Public branch: `main`
 - Active branch: `feat/traffic-town-kt-006-city-connections`
 - Parent development branch: `feat/traffic-town-kt-005-transit`
-- Published build: KT-004 at https://maikllx.github.io/TrafficTown/
-- Published merge commit: `78da07b2724ea98a92c91b00c0ce538696257eb6`
+- Historical KT-004 publication commit: `78da07b2724ea98a92c91b00c0ce538696257eb6`.
+- Latest public build on `main`: **KT-006 city connection puzzle**, commit `49994686f28f6a2086735d49e82ceee4f943137b`, deployed successfully by Actions run [#42865712955](https://github.com/MaiklLX/TrafficTown/actions/runs/42865712955).
+- Current branch contains post-publication refinements; it is 68 commits ahead and 3 commits behind `main` and must be reconciled before a future PR/merge.
 - KT-005 workflow run #25 / ID `42859680783` completed successfully (verify and deploy workflow checks for that feature-branch push; this does not publish it to Pages).
 - PR #1 (KT-001…KT-004) is merged.
 - User wants a mobile-first game with the clarity and feel of Mini Motorways, but original TrafficTown mechanics. Keep strict top-down 2D.
