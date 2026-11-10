@@ -8,7 +8,7 @@ Development branch: `feat/traffic-town-kt-005-transit`
 
 The public Pages build currently contains KT-004. KT-005 development adds:
 - A mobile-accessible transit control panel opened from the map.
-- Per-line status: active buses, onboard passengers and waiting passengers.
+- Per-line status: active buses, onboard passengers, waiting passengers and completed drop-offs; counters refresh live while the panel is open.
 - Adjustable departure headways (8–40 simulation seconds).
 - Multiple buses per line, dispatched when the route origin has safe spacing.
 - Passenger queues with destination stop indices; buses board passengers for their selected line and unload them at their requested stop.
