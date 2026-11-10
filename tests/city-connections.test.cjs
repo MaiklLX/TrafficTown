@@ -5,7 +5,7 @@ const assert = require('node:assert/strict');
 const html = fs.readFileSync('index.html', 'utf8');
 const match = html.match(/<script>([\s\S]*?)<\/script>/);
 assert.ok(match, 'inline game script exists');
-const hook = 'globalThis.__trafficTownTest = { buildings, roads, connections, cars, roadBudget: () => roadBudget, buildingPort, connectAnchors, pathfind, missionProgress, spawnCar };';
+const hook = 'globalThis.__trafficTownTest = { buildings, roads, connections, cars, roadBudget: () => roadBudget, buildingPort, connectAnchors, pathfind, missionProgress, spawnCar, step, trips: () => trips };';
 const close = match[1].lastIndexOf('})();');
 assert.notEqual(close, -1, 'game IIFE close exists');
 const gameScript = match[1].slice(0, close) + hook + match[1].slice(close);
@@ -31,8 +31,10 @@ const document = {
   },
   querySelectorAll() { return []; }
 };
+const deterministicMath = Object.create(Math);
+deterministicMath.random = () => 0.999;
 const sandbox = {
-  document, window: { addEventListener() {} }, navigator: {},
+  document, window: { addEventListener() {} }, navigator: {}, Math: deterministicMath,
   performance: { now: () => 0 }, requestAnimationFrame() {}, devicePixelRatio: 1
 };
 vm.runInNewContext(gameScript, sandbox);
@@ -51,6 +53,8 @@ assert.equal(connect(building('Сосновый квартал'), building('Те
 assert.equal(connect(building('Старый город'), building('Мастерские')), true);
 assert.equal(connect(building('Речной район'), building('Торговая улица')), true);
 assert.equal(game.missionProgress(), 3, 'three useful home-to-destination links complete the mission');
+assert.equal(connect(building('Сосновый квартал'), building('Технопарк')), true, 'an alternate route can be added for a connected pair');
+assert.equal(game.missionProgress(), 3, 'duplicate routes do not inflate unique mission progress');
 assert.ok(game.roads.size > 0 && game.roads.size < 90, 'connections consume a finite road budget');
 assert.ok(game.roadBudget() > 0, 'budget remains after the starter mission');
 
@@ -63,9 +67,14 @@ for (const connection of game.connections) {
     }
   }
 }
+game.spawnCar();
+assert.equal(game.cars.length, 1, 'a connected pair can generate a trip');
+game.cars[0].index = game.cars[0].path.length - 1;
+game.step(0.001);
+assert.equal(game.trips(), 1, 'a trip is counted only after the vehicle reaches its destination');
 for (let i = 0; i < 12; i++) game.spawnCar();
 assert.ok(game.cars.length > 0, 'connected destinations generate vehicle trips');
 assert.equal(game.cars.some(car => car.origin === 'Новый берег'), false, 'unconnected homes do not generate phantom trips');
 
 console.log('City connection gameplay tests: OK');
-console.log('Mission: ' + game.missionProgress() + '/3; roads: ' + game.roads.size + '; budget left: ' + game.roadBudget());
+console.log('Mission: ' + game.missionProgress() + '/3; delivered: ' + game.trips() + '; roads: ' + game.roads.size + '; budget left: ' + game.roadBudget());
