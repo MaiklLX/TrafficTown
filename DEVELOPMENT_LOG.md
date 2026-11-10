@@ -1,61 +1,77 @@
 # TrafficTown — development journal
 
-## Current checkpoint: KT-005 (development in progress)
+## Current checkpoint: KT-006 — meaningful city connections (in progress)
 
 - Repository: `MaiklLX/TrafficTown`
 - Public branch: `main`
-- Active development branch: `feat/traffic-town-kt-005-transit`
-- Published KT-004 merge commit: `78da07b2724ea98a92c91b00c0ce538696257eb6`
-- Published browser build: https://maikllx.github.io/TrafficTown/
-- GitHub Actions publish run: https://github.com/MaiklLX/TrafficTown/actions/runs/42859247929 — verify and deploy jobs succeeded.
-- PR #1 (KT-001…KT-004): merged.
-- User preference: mobile-first; strict top-down 2D; no daily checks or recurring reminders. User has authorized publishing tested milestones to Pages; keep active work on feature branches until ready.
+- Active branch: `feat/traffic-town-kt-006-city-connections`
+- Parent development branch: `feat/traffic-town-kt-005-transit`
+- Published build: KT-004 at https://maikllx.github.io/TrafficTown/
+- Published merge commit: `78da07b2724ea98a92c91b00c0ce538696257eb6`
+- KT-005 workflow run #25 / ID `42859680783` completed successfully (verify and deploy workflow checks for that feature-branch push; this does not publish it to Pages).
+- PR #1 (KT-001…KT-004) is merged.
+- User wants a mobile-first game with the clarity and feel of Mini Motorways, but original TrafficTown mechanics. Keep strict top-down 2D.
+- User has authorized publishing verified milestones. Keep new work on feature branches until ready.
+- Do not create daily checks or recurring reminders.
 
 ## Completed checkpoints
 
 - KT-001 — responsive playable city, roads, cars, PWA shell and basic simulation.
 - KT-002 — one-way roads and direction-aware pathfinding.
 - KT-003 — individual intersection turn restrictions, route recalculation and configurable alternating signal phases.
-- KT-004 — operational first bus loop:
-  - ordered stops placed on existing road tiles;
-  - stop-to-stop paths validated using the normal route finder;
-  - buses circulate and dwell at stops;
-  - simplified passenger queues, boarding and alighting;
-  - route and numbered stop markers drawn on the map.
-- KT-004 was published to GitHub Pages after PR #1 was merged. GitHub Actions run #16 / ID `42859247929` completed successfully, including both `verify` and `deploy`.
+- KT-004 — first bus loop with ordered stops, route validation, dwell, passenger queues, boarding/alighting and route markers. KT-004 is public on Pages.
+- KT-005 — transit manager, per-line live status, adjustable 8–40 second headways, multiple buses, destination-aware passenger queues, private-car congestion metrics and responsive panel. The branch's latest recorded workflow run succeeded; browser/device verification is still outstanding.
 
-## KT-005 implementation so far
+## KT-006 implementation so far
 
-Branch: `feat/traffic-town-kt-005-transit`
+Branch: `feat/traffic-town-kt-006-city-connections`
 
-- Transit manager button added to the map overlay, accessible on mobile and desktop.
-- Manager shows each line's active bus count, passengers onboard and waiting queue.
-- Headway can be adjusted from 8 to 40 simulation seconds.
-- Additional buses dispatch on schedule when the line origin has sufficient spacing.
-- Passenger queues carry a destination stop index and line ID; buses board only passengers assigned to their line and unload at their destination stop.
-- Private-car congestion/load calculation now excludes buses; header separates private cars and bus vehicles.
-- Transit manager and editor overlay adjusted for narrow mobile screens.
-- The JS syntax check passed after the KT-005 code change.
+- Started from the KT-005 feature branch, preserving transit work without changing `main`.
+- Removed the pre-painted starter road grid. The player now starts with city objects and must build the network.
+- Replaced free-form road painting in the primary tool with a two-point connection flow: select a building, then a destination building or an existing road.
+- Building entrances are defined as explicit access points just outside each footprint.
+- A grid route planner finds a path between selected points and avoids building footprints and the park.
+- Construction consumes a finite road budget (90 pieces at start); existing roads can be reused.
+- Added a first mission counter: only home-to-work and home-to-shop links count toward the 3-connection objective.
+- Added visual selection/access markers to buildings.
+- Reworked road rendering into continuous rounded road segments with shoulders and lane markings.
+- Car spawning now requires both endpoint buildings to have direct road access; unconnected buildings cannot create phantom traffic.
+- Retained the bus manager and route tools for later use once roads are built.
 
-### Latest KT-005 commits
-- `96ab7a92ead8e1e71c8d911867c5a828ab0711eb` — transit manager, dispatch headways and destination-aware passenger queues.
-- `9e5a27401a5e13acc3ce5793d3f2e405fc970589` — mobile overlay refinements and adaptive bus spacing.
-- `2c3974e3ace56b2a5a6660965a5c206c11cf6dfa` — PWA shell cache version bump.
-- `a71bfdf64c6097190056cd3ff3c3e5933009335b` — live transit manager counters.
-- README and journal updates follow these implementation commits.
+### KT-006 checks performed
+- JavaScript syntax parse passed after the latest code changes.
+- Deterministic logic harness:
+  - initial road count = 0;
+  - initial road budget = 90;
+  - created home → Tech Park, home → Workshops and home → Shopping Street links;
+  - all three links succeeded;
+  - mission progress reached 3/3;
+  - resulting road count = 71;
+  - remaining budget = 19;
+  - first route was found with 22 road cells.
+- This is a code-level logic test with a stubbed canvas/DOM, not a real browser/device test.
+- Need test actual tap/click behavior, map readability, touch targets, car movement, bus line creation and PWA cache behavior in a browser before publishing.
 
-### Remaining KT-005 verification and polish
-1. Verify the current feature-branch GitHub Actions run; do not call it passing until confirmed.
-2. Validate the manager interactions and dispatch/boarding behavior with a browser or a deterministic test harness if available.
-3. Check phone-width toolbar overflow and panel scroll behavior.
-4. Ensure selected bus details are readable and passenger counts remain consistent.
-5. Once complete, update PR summary, mark ready, merge to main and verify Pages deployment success.
+## Design rules for the new game loop
 
-## Next checkpoint: KT-006
-After KT-005 is stable, begin transport infrastructure: realistic bridge/tunnel/grade-separated crossings only after designing clear rules for crossings, pathfinding and mobile construction UX. Do not jump to rail/metro before the road network is robust.
+- The player is a transport-network designer, not a tile painter.
+- Every road connection should have a reason: homes to jobs, homes to shops, later schools, parks, stations and services.
+- Shorter/connected routes conserve the road budget; disconnected buildings should not generate trips.
+- Network quality should be visible through completed trips, waiting time, traffic density and resident satisfaction.
+- Introduce missions gradually; avoid overwhelming the player with every traffic tool at once.
+- Mobile layout and touch interaction are the primary acceptance criteria.
+
+## Next steps
+
+1. Run the current branch workflow and confirm its final result.
+2. Inspect and refine the connection interaction, especially taps on building footprints and road endpoints.
+3. Test the first three mission routes, car spawning and congestion using browser automation if available.
+4. Verify mobile layout and bus functionality after the no-starter-roads change.
+5. Add demand and objective feedback, then create the next checkpoint.
+6. Only after successful checks, open a PR and publish the combined milestone to Pages.
 
 ## Continue in a new chat
 
 Paste this exact phrase:
 
-**«Продолжай TrafficTown с контрольной точки KT-005. Сначала прочитай DEVELOPMENT_LOG.md и README.md в ветке feat/traffic-town-kt-005-transit, проверь актуальный HEAD, GitHub Actions и опубликованную версию Pages. Доведи до конца панель автобусных линий, интервалы, несколько автобусов и пассажиров с пунктами назначения; проверь мобильную версию. После проверок обнови журнал, создай следующую КТ и фразу для нового чата. Публиковать проверенные этапы в GitHub Pages можно, но сначала держи работу в feature-ветке. Ежедневные проверки не создавать.»**
+**«Продолжай TrafficTown с КТ-006 в ветке feat/traffic-town-kt-006-city-connections. Прочитай DEVELOPMENT_LOG.md и README.md, проверь актуальный HEAD и GitHub Actions. Доведи мобильную механику соединения зданий и дорожную сеть в стиле Mini Motorways: строительство от объекта к объекту, ограниченный бюджет дорог, спрос на поездки, пробки и цели уровня. Проверь реальное поведение в браузере, не заявляй о тестах устройства без проверки. Сохраняй строго top-down 2D, держи main нетронутой до завершения этапа. После успешных проверок обнови журнал и опубликуй проверенную версию в GitHub Pages. Ежедневные проверки не создавать.»**
