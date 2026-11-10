@@ -1,38 +1,48 @@
 # TrafficTown
 
-A top-down, living-city traffic simulation for mobile and desktop browsers.
+A mobile-first, top-down city traffic puzzle and simulation for phones, tablets and desktop browsers.
 
-## Current checkpoint — KT-004: operational bus routes
+## Current checkpoint — KT-006: meaningful city connections (in progress)
 
-Branch: `feat/traffic-town-foundation-001`
+Development branch: `feat/traffic-town-kt-006-city-connections`
 
-The playable prototype now includes the KT-003 road and intersection controls plus an initial operational bus layer:
-- Select the bus tool and tap existing road cells in order to place stops.
-- A line can be launched after at least two stops have been selected.
-- Each stop-to-stop segment is validated through the same route finder used by cars, respecting one-way streets and prohibited turns.
-- Launched buses move along the route, reverse at the end and continue circulating.
-- Buses dwell at stops, board waiting passengers and let passengers off.
-- Passenger queues accumulate at active line stops; route geometry and numbered stops are drawn on the city map.
-- Bus vehicles are selectable like other vehicles; private-car congestion metrics exclude buses.
+The public GitHub Pages build is still KT-004. The feature branch includes the KT-005 transit work and begins the new core game loop:
+- The starting map no longer has a pre-painted road grid; players create the network.
+- Tap a building, then a destination building or an existing road to create a complete connection.
+- The route planner finds a clear grid path while avoiding building footprints and the park.
+- Road construction uses a limited road-piece budget, so route length and reuse of the existing network matter.
+- The first mission asks players to connect three distinct residential districts to at least one workplace or shop; alternate routes from the same home do not inflate progress.
+- Mission progress is calculated from the live road network, so erasing a bridge or disconnecting a district removes its progress immediately.
+- New connections are validated against one-way streets and turn restrictions before the road budget is spent; invalid routes roll back cleanly.
+- Homes and destinations have replenishing trip demand. Car departures are weighted by demand and route length, and the trip counter advances only when a vehicle reaches its destination.
+- The starter objective has two stages: connect three different homes, then deliver 12 trips to complete the level.
+- Cars can spawn only when both the origin and destination buildings have direct access to the connected road network.
+- Road rendering is moving from isolated square tiles to a continuous rounded road surface with soft shoulders and lane markings.
+- The original bus line manager, headway settings and destination-aware passenger queues are retained in the branch.
 
-This is a first playable transit loop, not a finished transit simulation. Passenger generation and boarding are currently simplified; timetable headways, destination-based passenger journeys, transfers, line editing/deletion and service reliability remain future work.
-
-## Development and release safety
-
-The GitHub Actions workflow checks inline JavaScript syntax and required PWA files on feature branches. GitHub Pages deployment is intentionally restricted to `main`. Development remains on `feat/traffic-town-foundation-001`; no public release or merge to `main` is authorized.
+### Verification so far
+- JavaScript parses successfully with a syntax check.
+- Deterministic tests now cover three distinct connected homes, duplicate/alternate links, route validity under traffic rules, invalid self-links, completed trip counting, road-budget safety, and mission reset after the network is erased. The latest successful run is [GitHub Actions #42865294592](https://github.com/MaiklLX/TrafficTown/actions/runs/42865294592).
+- This is a code-level logic check, not a claim of manual browser or physical-device testing.
 
 ## Product direction
 
 - Strict top-down 2D; no isometric or 3D view.
-- The player designs and improves the road network.
-- Residents, workplaces and travel demand evolve autonomously.
-- Follow individual vehicles and inspect their routes, waits and bottlenecks.
-- Public transport should reduce private-car demand.
-- Browser-first responsive experience for Android, iOS and desktop.
+- Mobile-first controls inspired by the clarity and immediacy of Mini Motorways, with original TrafficTown identity and mechanics.
+- Roads should connect meaningful city objects, not be painted as arbitrary isolated squares.
+- Homes generate trips to workplaces and shops; destinations and city growth create evolving demand.
+- Good network design distributes traffic; poor connections create queues, delays and bottlenecks.
+- Follow individual vehicles and inspect their routes, waits and congestion.
+- Public transport should complement the road network and reduce private-car demand.
+- Scenarios, progression, new road types, city events and save/load will be developed after the core connection loop is reliable.
 
-## Next milestones
+## Publication
 
-1. KT-004 — real bus routes, stops, schedules and passenger demand.
-2. KT-005 — bridges, elevated roads, tunnels and grade-separated crossings.
-3. KT-006 — rail and metro lines, stations and mode choice.
-4. KT-007 — richer city growth, scenarios, save/load and mobile usability pass.
+GitHub Pages is deployed from `main` after a successful GitHub Actions verification and deploy. The currently published build remains KT-004. KT-005 and KT-006 are feature-branch work and will be published after interaction, mobile layout and CI checks are complete.
+
+## Next work
+
+1. Finish and verify the building-to-building connection loop on phone-sized and desktop layouts.
+2. Make demand, traffic flow and congestion respond visibly to network quality.
+3. Add scenario progression, goals, rewards and new map situations.
+4. Rework the main menu, level selection and onboarding around the new puzzle-first game.

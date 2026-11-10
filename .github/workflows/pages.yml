@@ -30,6 +30,8 @@ jobs:
             console.log('Inline script ' + (i + 1) + ': syntax OK');
           });
           NODE
+      - name: Test city connection gameplay
+        run: node tests/city-connections.test.cjs
       - name: Check PWA files
         run: |
           test -s index.html
