@@ -32,7 +32,12 @@ Branch: `feat/traffic-town-kt-006-city-connections`
 - Building entrances are defined as explicit access points just outside each footprint.
 - A grid route planner finds a path between selected points and avoids building footprints and the park.
 - Construction consumes a finite road budget (90 pieces at start); existing roads can be reused.
-- Added a first mission counter: only home-to-work and home-to-shop links count toward the 3-connection objective.
+- Added a first mission counter: three distinct residential districts must reach at least one workplace or shop. Multiple destinations from one home do not count as multiple districts.
+- Mission progress is based on live road-network connected components, not historical connection records; removing a critical road removes progress when a district becomes disconnected.
+- New connections are checked with the live pathfinder after proposed road cells are placed. One-way and turn restrictions are respected; invalid routes roll back their newly added road cells and do not spend budget.
+- Trip demand now accumulates at homes and destinations. Departure selection is weighted by both demand and route length, so busy districts generate more traffic.
+- The trip counter now records completed deliveries, not just departures. The starter level has two stages: connect three different homes, then deliver 12 trips.
+- Mobile HUD no longer crowds the action buttons; the initial hint describes the actual tap-to-connect interaction.
 - Added visual selection/access markers to buildings.
 - Reworked road rendering into continuous rounded road segments with shoulders and lane markings.
 - Reduced the map grid from 38×28 to 28×22 so buildings and roads occupy more usable screen space on phones.
@@ -44,17 +49,19 @@ Branch: `feat/traffic-town-kt-006-city-connections`
 
 ### KT-006 checks performed
 - JavaScript syntax parse passed after the latest code changes.
-- The test file itself also passes a syntax parse. The GitHub Actions workflow has been extended to execute the deterministic connection tests; the latest run is still pending/queued at this handoff.
+- GitHub Actions run `42865294592` completed successfully: inline JavaScript syntax, deterministic city connection gameplay tests and PWA file checks all passed.
 - Deterministic logic harness:
   - initial road count = 0;
   - initial road budget = 90;
-  - created home → Tech Park, home → Workshops and home → Shopping Street links;
+  - created connections from three distinct homes, including an alternate destination from the first home;
   - all three links succeeded;
   - mission progress reached 3/3;
-  - resulting road count = 48;
-  - remaining budget = 42;
-  - first route was found with 17 road cells.
+  - resulting road count = 52;
+  - remaining budget = 38;
+  - all recorded building-to-building links remain traversable through the live pathfinder.
 - 12 simulated car spawns produced no trips from the unconnected “Новый берег” district.
+- A completed route increments the delivery counter only after the vehicle reaches its destination.
+- Adding multiple destinations to one home still counts as one residential district; erasing the road network resets live mission progress to zero.
 - This is a code-level logic test with a stubbed canvas/DOM, not a real browser/device test.
 - Need test actual tap/click behavior, map readability, touch targets, car movement, bus line creation and PWA cache behavior in a browser before publishing.
 
@@ -69,12 +76,11 @@ Branch: `feat/traffic-town-kt-006-city-connections`
 
 ## Next steps
 
-1. Run the current branch workflow and confirm its final result.
-2. Inspect and refine the connection interaction, especially taps on building footprints and road endpoints.
-3. Test the first three mission routes, car spawning and congestion using browser automation if available.
-4. Verify mobile layout and bus functionality after the no-starter-roads change.
-5. Add demand and objective feedback, then create the next checkpoint.
-6. Only after successful checks, open a PR and publish the combined milestone to Pages.
+1. Test the actual touch interaction, map readability, vehicle movement and bus-line setup in a real browser on phone-sized and desktop viewports.
+2. Tune trip demand, vehicle spacing and congestion so road design has visible consequences.
+3. Add level progression, new map scenarios and rewards after the first level loop is fun and reliable.
+4. Rework the main menu and level selection around the puzzle-first game.
+5. Only after browser checks and successful CI, open a PR and publish the combined milestone to Pages.
 
 ## Continue in a new chat
 
