@@ -14,7 +14,9 @@ The public GitHub Pages build is still KT-004. The feature branch includes the K
 - The first mission asks players to connect three distinct residential districts to at least one workplace or shop; alternate routes from the same home do not inflate progress.
 - Mission progress is calculated from the live road network, so erasing a bridge or disconnecting a district removes its progress immediately.
 - New connections are validated against one-way streets and turn restrictions before the road budget is spent; invalid routes roll back cleanly.
-- Homes and destinations have replenishing trip demand. Car departures are weighted by demand and route length, and the trip counter advances only when a vehicle reaches its destination.
+- Homes and destinations have replenishing trip demand, shown as small meters above each building. Car departures are weighted by demand and route length, and the trip counter advances only when a vehicle reaches its destination.
+- Live blocked vehicles create amber/red road hotspots. Congestion now combines traffic density with measured waiting delay; the city panel reports average delay.
+- City state is automatically saved locally every three seconds and on page exit, including roads, remaining budget, demand, cars, bus routes, stops, traffic controls, and mission progress. The PWA cache key is now `traffictown-shell-v5`.
 - The starter objective has two stages: connect three different homes, then deliver 12 trips to complete the level.
 - Cars can spawn only when both the origin and destination buildings have direct access to the connected road network.
 - Road rendering is moving from isolated square tiles to a continuous rounded road surface with soft shoulders and lane markings.
@@ -22,7 +24,7 @@ The public GitHub Pages build is still KT-004. The feature branch includes the K
 
 ### Verification so far
 - JavaScript parses successfully with a syntax check.
-- Deterministic tests now cover three distinct connected homes, duplicate/alternate links, route validity under traffic rules, invalid self-links, completed trip counting, road-budget safety, and mission reset after the network is erased. The latest successful run is [GitHub Actions #42865294592](https://github.com/MaiklLX/TrafficTown/actions/runs/42865294592).
+- Deterministic tests now cover three distinct connected homes, duplicate/alternate links, route validity under traffic rules, invalid self-links, completed trip counting, road-budget safety, and mission reset after the network is erased. The latest successful run, including save/restore coverage, is [GitHub Actions #42868280577](https://github.com/MaiklLX/TrafficTown/actions/runs/42868280577).
 - This is a code-level logic check, not a claim of manual browser or physical-device testing.
 
 ## Product direction
