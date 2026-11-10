@@ -104,14 +104,15 @@ function buildingAt(x,y){return buildings.find(b=>b.type!=='park'&&x>=b.x&&x<b.x
 function buildingPort(b){return {x:b.x+1,y:b.y+2}}
 function anchorAt(x,y){const b=buildingAt(x,y);if(b)return {point:buildingPort(b),building:b,label:b.name};if(roadAt(x,y))return {point:{x,y},building:null,label:'Дорожная сеть'};return null}
 function gridRoute(start,end){
- const q=[start],seen=new Map([[key(start.x,start.y),null]]),dirs=[[1,0],[-1,0],[0,1],[0,-1]];
- while(q.length){const p=q.shift();if(p.x===end.x&&p.y===end.y)break;
-  for(const [dx,dy] of dirs){const x=p.x+dx,y=p.y+dy,k=key(x,y);if(!inside(x,y)||seen.has(k))continue;
+ const q=[start],prev=new Map([[key(start.x,start.y),null]]),cost=new Map([[key(start.x,start.y),0]]),dirs=[[1,0],[-1,0],[0,1],[0,-1]];
+ while(q.length){q.sort((a,b)=>cost.get(key(a.x,a.y))-cost.get(key(b.x,b.y)));const p=q.shift(),pk=key(p.x,p.y);if(p.x===end.x&&p.y===end.y)break;
+  for(const [dx,dy] of dirs){const x=p.x+dx,y=p.y+dy,k=key(x,y);if(!inside(x,y))continue;
    const b=buildingAt(x,y),park=buildings.some(z=>z.type==='park'&&x>=z.x&&x<z.x+2&&y>=z.y&&y<z.y+2);
-   if((b&&!(x===end.x&&y===end.y))||park)continue;seen.set(k,key(p.x,p.y));q.push({x,y});
+   if((b&&!(x===end.x&&y===end.y))||park)continue;
+   const nextCost=cost.get(pk)+(roadAt(x,y)?.18:1);if(!cost.has(k)||nextCost<cost.get(k)){cost.set(k,nextCost);prev.set(k,pk);q.push({x,y})}
   }
  }
- const endKey=key(end.x,end.y);if(!seen.has(endKey))return null;const out=[];for(let k=endKey;k;k=seen.get(k)){const [x,y]=k.split(',').map(Number);out.unshift({x,y})}return out;
+ const endKey=key(end.x,end.y);if(!prev.has(endKey))return null;const out=[];for(let k=endKey;k;k=prev.get(k)){const [x,y]=k.split(',').map(Number);out.unshift({x,y})}return out;
 }
 function connectAnchors(a,b){
  if(!a||!b||a.point.x===b.point.x&&a.point.y===b.point.y)return false;
