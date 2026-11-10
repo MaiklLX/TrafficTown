@@ -5,7 +5,7 @@ const assert = require('node:assert/strict');
 const html = fs.readFileSync('index.html', 'utf8');
 const match = html.match(/<script>([\s\S]*?)<\/script>/);
 assert.ok(match, 'inline game script exists');
-const hook = 'globalThis.__trafficTownTest = { buildings, roads, connections, cars, roadBudget: () => roadBudget, buildingPort, connectAnchors, pathfind, missionProgress, spawnCar, step, updateUI, saveGame, loadGame, trips: () => trips };';
+const hook = 'globalThis.__trafficTownTest = { get buildings() { return buildings; }, get roads() { return roads; }, connections, get cars() { return cars; }, roadBudget: () => roadBudget, buildingPort, connectAnchors, pathfind, missionProgress, spawnCar, step, updateUI, saveGame, loadGame, trips: () => trips };';
 const close = match[1].lastIndexOf('})();');
 assert.notEqual(close, -1, 'game IIFE close exists');
 const gameScript = match[1].slice(0, close) + hook + match[1].slice(close);
