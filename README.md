@@ -2,24 +2,24 @@
 
 A top-down, living-city traffic simulation for mobile and desktop browsers.
 
-## Current checkpoint — KT-004: operational bus routes
+## Current checkpoint — KT-005: transit dispatch and passenger flow
 
-Branch: `feat/traffic-town-foundation-001`
+Development branch: `feat/traffic-town-kt-005-transit`
 
-The playable prototype now includes the KT-003 road and intersection controls plus an initial operational bus layer:
-- Select the bus tool and tap existing road cells in order to place stops.
-- A line can be launched after at least two stops have been selected.
-- Each stop-to-stop segment is validated through the same route finder used by cars, respecting one-way streets and prohibited turns.
-- Launched buses move along the route, reverse at the end and continue circulating.
-- Buses dwell at stops, board waiting passengers and let passengers off.
-- Passenger queues accumulate at active line stops; route geometry and numbered stops are drawn on the city map.
-- Bus vehicles are selectable like other vehicles; private-car congestion metrics exclude buses.
+The public Pages build currently contains KT-004. KT-005 development adds:
+- A mobile-accessible transit control panel opened from the map.
+- Per-line status: active buses, onboard passengers and waiting passengers.
+- Adjustable departure headways (8–40 simulation seconds).
+- Multiple buses per line, dispatched when the route origin has safe spacing.
+- Passenger queues with destination stop indices; buses board passengers for their selected line and unload them at their requested stop.
+- Private-car congestion metrics separated from bus vehicle counts.
+- A responsive transit panel that remains usable on narrow phone screens.
 
-This is a first playable transit loop, not a finished transit simulation. Passenger generation and boarding are currently simplified; timetable headways, destination-based passenger journeys, transfers, line editing/deletion and service reliability remain future work.
+This remains an early simulation. Passenger demand is generated synthetically at active stops; realistic population-based trip choice, dwell-time calibration, timetable reliability, transfers, line editing/deletion and save/load are not complete.
 
-## Development and release safety
+## Publication
 
-The GitHub Actions workflow checks inline JavaScript syntax and required PWA files on feature branches. GitHub Pages deployment is intentionally restricted to `main`. Development remains on `feat/traffic-town-foundation-001`; no public release or merge to `main` is authorized.
+GitHub Pages is deployed from `main` after a successful GitHub Actions verification job. The currently published build is KT-004. KT-005 is being developed separately and will be published after its checks and review.
 
 ## Product direction
 
