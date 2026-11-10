@@ -40,7 +40,9 @@ Branch: `feat/traffic-town-kt-005-transit`
 ### Latest KT-005 commits
 - `96ab7a92ead8e1e71c8d911867c5a828ab0711eb` — transit manager, dispatch headways and destination-aware passenger queues.
 - `9e5a27401a5e13acc3ce5793d3f2e405fc970589` — mobile overlay refinements and adaptive bus spacing.
-- README and journal updates are being committed after these changes.
+- `2c3974e3ace56b2a5a6660965a5c206c11cf6dfa` — PWA shell cache version bump.
+- `a71bfdf64c6097190056cd3ff3c3e5933009335b` — live transit manager counters.
+- README and journal updates follow these implementation commits.
 
 ### Remaining KT-005 verification and polish
 1. Verify the current feature-branch GitHub Actions run; do not call it passing until confirmed.
