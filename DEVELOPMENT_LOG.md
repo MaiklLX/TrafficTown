@@ -91,9 +91,8 @@ Branch: `feat/traffic-town-kt-006-city-connections`
 
 ## Next steps
 
-1. Confirm the latest GitHub Actions run passes, including the same-lane / behind / crossing / oncoming vehicle tests and final cleanup.
-2. Run a longer deterministic simulation with several connected routes to confirm that vehicles continue moving without artificial standstills and that congestion rises only under genuine following pressure.
-3. Inspect the map and tap flow in a real browser at phone and desktop sizes; no browser automation is currently available in this workflow, so do not claim device verification.
+1. Run a longer deterministic simulation with several connected routes to confirm that vehicles continue moving without artificial standstills and that congestion rises only under genuine following pressure.
+2. Inspect the map and tap flow in a real browser at phone and desktop sizes; no browser automation is currently available in this workflow, so do not claim device verification.
 4. Add an undo/redo or route removal flow only after the basic connection experience is stable.
 5. Build a proper level start / completion / next-level flow, then unlock transit and intersection controls gradually.
 6. Only after browser checks and successful CI, open a PR and publish the combined milestone to Pages.

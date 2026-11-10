@@ -24,7 +24,7 @@ The public GitHub Pages build is still KT-004. The feature branch includes the K
 
 ### Verification so far
 - JavaScript parses successfully with a syntax check.
-- Deterministic tests now cover three distinct connected homes, duplicate/alternate links, route validity under traffic rules, invalid self-links, completed trip counting, road-budget safety, and mission reset after the network is erased. The latest successful run, including save/restore coverage, is [GitHub Actions #42868280577](https://github.com/MaiklLX/TrafficTown/actions/runs/42868280577).
+- Deterministic tests now cover three distinct connected homes, duplicate/alternate links, route validity under traffic rules, invalid self-links, completed trip counting, road-budget safety, and mission reset after the network is erased. The latest successful run for the refined traffic rules, mobile HUD, map cleanup and PWA checks is [GitHub Actions #42875838550](https://github.com/MaiklLX/TrafficTown/actions/runs/42875838550).
 - CI now also tests same-lane following, vehicles behind, perpendicular crossings and oncoming traffic. This is a code-level logic check, not a claim of manual browser or physical-device testing.
 
 ## Product direction
