@@ -1,12 +1,16 @@
 # TrafficTown — development journal
 
-## Current checkpoint: KT-006 — meaningful city connections (in progress)
+## Current checkpoint: KT-006 — city connection puzzle (published)
 
 - Repository: `MaiklLX/TrafficTown`
 - Public branch: `main`
-- Active branch: `feat/traffic-town-kt-006-city-connections`
+- Active branch: `main`
+- Development branch: `feat/traffic-town-kt-006-city-connections`
 - Parent development branch: `feat/traffic-town-kt-005-transit`
-- Published build: KT-004 at https://maikllx.github.io/TrafficTown/
+- Published build: KT-006 at https://maikllx.github.io/TrafficTown/
+- PR #2 merged: https://github.com/MaiklLX/TrafficTown/pull/2
+- KT-006 merge commit: `da711f0ead08775d4282afbd61fd8c778372e7f3`
+- Published Pages workflow run: `42865546024` — verify and deploy both succeeded.
 - Published merge commit: `78da07b2724ea98a92c91b00c0ce538696257eb6`
 - KT-005 workflow run #25 / ID `42859680783` completed successfully (verify and deploy workflow checks for that feature-branch push; this does not publish it to Pages).
 - PR #1 (KT-001…KT-004) is merged.
@@ -63,7 +67,7 @@ Branch: `feat/traffic-town-kt-006-city-connections`
 - A completed route increments the delivery counter only after the vehicle reaches its destination.
 - Adding multiple destinations to one home still counts as one residential district; erasing the road network resets live mission progress to zero.
 - This is a code-level logic test with a stubbed canvas/DOM, not a real browser/device test.
-- Need test actual tap/click behavior, map readability, touch targets, car movement, bus line creation and PWA cache behavior in a browser before publishing.
+- The build is published so the user can test it. Manual browser/physical-device testing has not been performed by the assistant; next step is to collect the user's phone/desktop playtest feedback.
 
 ## Design rules for the new game loop
 
@@ -80,10 +84,10 @@ Branch: `feat/traffic-town-kt-006-city-connections`
 2. Tune trip demand, vehicle spacing and congestion so road design has visible consequences.
 3. Add level progression, new map scenarios and rewards after the first level loop is fun and reliable.
 4. Rework the main menu and level selection around the puzzle-first game.
-5. Only after browser checks and successful CI, open a PR and publish the combined milestone to Pages.
+5. Use the user's playtest feedback to refine the published build; subsequent changes should again be made on feature branches and published after successful checks.
 
 ## Continue in a new chat
 
 Paste this exact phrase:
 
-**«Продолжай TrafficTown с КТ-006 в ветке feat/traffic-town-kt-006-city-connections. Прочитай DEVELOPMENT_LOG.md и README.md, проверь актуальный HEAD и GitHub Actions. Доведи мобильную механику соединения зданий и дорожную сеть в стиле Mini Motorways: строительство от объекта к объекту, ограниченный бюджет дорог, спрос на поездки, пробки и цели уровня. Проверь реальное поведение в браузере, не заявляй о тестах устройства без проверки. Сохраняй строго top-down 2D, держи main нетронутой до завершения этапа. После успешных проверок обнови журнал и опубликуй проверенную версию в GitHub Pages. Ежедневные проверки не создавать.»**
+**«Продолжай TrafficTown с опубликованной КТ-006. Прочитай DEVELOPMENT_LOG.md и README.md, проверь main и GitHub Actions. Теперь развивай следующий этап: реальные сценарии и уровни, красивое главное меню, прогресс и награды, более выразительный трафик и мобильные взаимодействия в духе Mini Motorways. Сохраняй top-down 2D, делай изменения на feature-ветках, тестируй автоматикой и не заявляй о физическом тестировании без проверки. Публикуй завершённые этапы в GitHub Pages. Ежедневные проверки не создавать.»**
