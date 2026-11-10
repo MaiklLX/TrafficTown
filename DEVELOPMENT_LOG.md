@@ -47,7 +47,7 @@ Branch: `feat/traffic-town-kt-006-city-connections`
 - Reworked the road palette and grid contrast: softer ground grid, broader muted road surface, cleaner shoulders and lighter centre markings.
 - Simplified map controls to simulation speed only; removed unused zoom and bus-manager buttons from the primary game HUD.
 - Congestion now uses active vehicle density and the number of currently blocked cars; average delay is measured from accumulated trip delay rather than historical blocked-state counts.
-- PWA cache key advanced to `traffictown-shell-v8` to ensure mobile clients request the updated interface.
+- PWA cache key advanced to `traffictown-shell-v9` to ensure mobile clients request the updated interface.
 - Added versioned local autosave (`traffictown-save-v1`): the simulation stores roads, vehicles, buildings and demand, budget, bus routes/queues, traffic controls, trip count and population every three seconds and on page exit. On reload, a valid save is restored and the player receives a confirmation in the dispatcher tip.
 - PWA shell cache bumped to `traffictown-shell-v5` so the updated build replaces the older cached UI.
 - Mobile HUD no longer crowds the action buttons; the initial hint describes the actual tap-to-connect interaction.
@@ -113,6 +113,6 @@ Paste this exact phrase:
 - Random district and population growth were removed from the starter level; the map and objective remain stable while the player learns the network. Legacy signal markers are also no longer rendered or restored into the starter simulation.
 - Vehicle generation is capped against available road length and runs at a lower base rate, preventing speed settings from flooding the map.
 - Traffic pressure is computed from active vehicle density and currently blocked cars. The average delay indicator uses accumulated delay on active trips.
-- Road surfaces now use a uniform grassy field with subtle point guides instead of visible square tiles, wider muted asphalt and clearer soft edges / centre markings. Selecting a car explains whether it is waiting and why. Mobile HUD retains the objective and road budget without experimental control clutter.
+- Road surfaces now use a uniform grassy field with subtle point guides instead of visible square tiles, wider muted asphalt and clearer soft edges / centre markings. Vehicles are offset into opposing visual lanes, so oncoming cars no longer appear to overlap. Selecting a car explains whether it is waiting and why. Mobile HUD retains the objective and road budget without experimental control clutter.
 - PWA cache is `traffictown-shell-v6`.
 - Latest test fix aligns the CI delay assertion with the actual trip-delay field. Latest Actions run is being checked; do not publish until it is green.
